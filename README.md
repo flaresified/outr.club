@@ -1,2 +1,2 @@
 # outr.club
-<img width="325" height="14" alt="image" src="https://github.com/user-attachments/assets/88c52988-d253-4ec0-9512-c154d0d7acb1" />
+<img width="1500" height="1500" alt="blank" src="https://github.com/user-attachments/assets/dc7a5e61-f6c1-4df3-8693-1e1b4ca196b3" />
