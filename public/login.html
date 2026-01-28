@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Log in · outr.club</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="card">
+    <h1>Log in</h1>
+    <p class="muted">Sign in to your outr.club account.</p>
+    <form class="form" id="login-form">
+      <div id="form-error" class="error" hidden></div>
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required autocomplete="email">
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required autocomplete="current-password">
+      <button type="submit" class="btn btn-primary submit">Log in</button>
+    </form>
+    <p class="small links"><a href="/signup">Need an account? Sign up</a> · <a href="/">Home</a></p>
+  </div>
+  <script>
+    (async function() {
+      const token = localStorage.getItem('outr_token');
+      if (!token) return;
+      try {
+        const res = await fetch('/api/me', { headers: { 'Authorization': 'Bearer ' + token } });
+        if (res.ok) { window.location.href = '/app'; return; }
+      } catch (_) {}
+    })();
+    document.getElementById('login-form').onsubmit = async (e) => {
+      e.preventDefault();
+      const errEl = document.getElementById('form-error');
+      errEl.hidden = true;
+      errEl.textContent = '';
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) {
+          errEl.textContent = data.error || 'Log in failed';
+          errEl.hidden = false;
+          return;
+        }
+        if (data.token) localStorage.setItem('outr_token', data.token);
+        window.location.href = '/app';
+      } catch (err) {
+        errEl.textContent = 'Network error. Try again.';
+        errEl.hidden = false;
+      }
+    };
+  </script>
+</body>
+</html>

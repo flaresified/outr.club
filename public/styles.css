@@ -1,0 +1,111 @@
+:root {
+  --bg: #0d0d0f;
+  --surface: #16161a;
+  --border: #2a2a2e;
+  --text: #eaeaea;
+  --muted: #888;
+  --accent: #7c5cff;
+  --accent-hover: #9280ff;
+  --error: #e55c5c;
+}
+
+* { box-sizing: border-box; }
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  gap: 0.75rem;
+}
+
+.card {
+  width: 100%;
+  max-width: 22rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 2rem;
+}
+
+.user-bar {
+  width: 100%;
+  max-width: 22rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.user-bar .pfp {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--border);
+}
+
+.user-bar .name {
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin: 0;
+  flex: 1;
+}
+
+.user-bar .logout {
+  margin-left: auto;
+  font-size: 0.85rem;
+  padding: 0.4rem 0.65rem;
+}
+
+h1 { margin: 0 0 0.5rem; font-size: 1.5rem; }
+.muted { color: var(--muted); margin: 0 0 1.5rem; font-size: 0.95rem; }
+
+.actions { display: flex; gap: 0.75rem; margin-bottom: 1.5rem; }
+.actions .btn { flex: 1; text-align: center; }
+
+.btn {
+  display: inline-block;
+  padding: 0.65rem 1rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: background 0.15s;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  font-family: inherit;
+}
+.btn:hover { background: var(--border); }
+.btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn-primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+
+.form label { display: block; margin-bottom: 0.35rem; font-size: 0.9rem; color: var(--muted); }
+.form input {
+  width: 100%;
+  padding: 0.65rem 0.85rem;
+  margin-bottom: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 1rem;
+}
+.form input:focus { outline: none; border-color: var(--accent); }
+.form .error { color: var(--error); font-size: 0.9rem; margin-bottom: 0.75rem; }
+.form .submit { width: 100%; margin-top: 0.5rem; }
+
+.small { font-size: 0.85rem; color: var(--muted); margin: 0; }
+.small a { color: var(--accent); }
+.links { margin-top: 1rem; }
+.links a { color: var(--accent); }

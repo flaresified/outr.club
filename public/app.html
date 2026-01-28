@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>App · outr.club</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="card">
+    <div id="loading">Loading…</div>
+    <div id="logged-in" hidden>
+      <h1>Hey, <span id="username"></span></h1>
+      <p class="muted">You’re signed in.</p>
+      <button type="button" class="btn" id="logout">Log out</button>
+    </div>
+    <div id="logged-out" hidden>
+      <h1>Not signed in</h1>
+      <p class="muted">Log in or sign up to continue.</p>
+      <div class="actions">
+        <a href="/login" class="btn btn-primary">Log in</a>
+        <a href="/signup" class="btn">Sign up</a>
+      </div>
+    </div>
+    <p class="small links" style="margin-top: 1rem;"><a href="/">Home</a></p>
+  </div>
+  <div class="user-bar" id="user-bar" hidden>
+    <img src="/default.png" alt="" class="pfp" onerror="this.src='/default.svg'">
+    <span class="name" id="user-bar-name"></span>
+    <button type="button" class="btn logout" id="user-bar-logout">Log out</button>
+  </div>
+  <script>
+    const token = localStorage.getItem('outr_token');
+    const loading = document.getElementById('loading');
+    const loggedIn = document.getElementById('logged-in');
+    const loggedOut = document.getElementById('logged-out');
+
+    async function check() {
+      if (!token) {
+        loading.hidden = true;
+        loggedOut.hidden = false;
+        return;
+      }
+      try {
+        const res = await fetch('/api/me', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        if (res.ok) {
+          const { user } = await res.json();
+          const name = user.username || user.email || 'there';
+          document.getElementById('username').textContent = name;
+          document.getElementById('user-bar-name').textContent = name;
+          document.getElementById('user-bar').hidden = false;
+          loading.hidden = true;
+          loggedIn.hidden = false;
+        } else {
+          localStorage.removeItem('outr_token');
+          loading.hidden = true;
+          loggedOut.hidden = false;
+        }
+      } catch {
+        loading.hidden = true;
+        loggedOut.hidden = false;
+      }
+    }
+
+    document.getElementById('logout').onclick = logout;
+    document.getElementById('user-bar-logout').onclick = logout;
+    function logout() {
+      localStorage.removeItem('outr_token');
+      window.location.href = '/';
+    }
+
+    check();
+  </script>
+</body>
+</html>

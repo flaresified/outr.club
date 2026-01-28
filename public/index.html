@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>outr.club</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="card">
+    <h1>outr.club</h1>
+    <p class="muted">Welcome.</p>
+    <div class="actions" id="auth-buttons">
+      <a href="/signup" class="btn btn-primary">Sign up</a>
+      <a href="/login" class="btn">Log in</a>
+    </div>
+    <p class="small"><a href="/app">Go to app</a> · <a href="/health">API health</a></p>
+  </div>
+  <div class="user-bar" id="user-bar" hidden>
+    <img src="/default.png" alt="" class="pfp" onerror="this.src='/default.svg'">
+    <span class="name" id="user-bar-name"></span>
+    <button type="button" class="btn logout" id="user-bar-logout">Log out</button>
+  </div>
+  <script>
+    (async function() {
+      const token = localStorage.getItem('outr_token');
+      if (!token) return;
+      try {
+        const res = await fetch('/api/me', { headers: { 'Authorization': 'Bearer ' + token } });
+        if (res.ok) {
+          const { user } = await res.json();
+          document.getElementById('user-bar-name').textContent = user.username || user.email || '';
+          document.getElementById('user-bar').hidden = false;
+          var authButtons = document.getElementById('auth-buttons');
+          if (authButtons) authButtons.hidden = true;
+        }
+      } catch (_) {}
+    })();
+    document.getElementById('user-bar-logout')?.addEventListener('click', function() {
+      localStorage.removeItem('outr_token');
+      window.location.reload();
+    });
+  </script>
+</body>
+</html>
